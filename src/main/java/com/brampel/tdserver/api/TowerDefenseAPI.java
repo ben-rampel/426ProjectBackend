@@ -1,7 +1,9 @@
 package com.brampel.tdserver.api;
 
+import com.brampel.tdserver.auth.JwtTokenUtil;
 import com.brampel.tdserver.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,14 +20,17 @@ public class TowerDefenseAPI {
     private final UserRepository userRepository;
     private final ScoreRepository scoreRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public TowerDefenseAPI(UserRepository userRepository, ScoreRepository scoreRepository, PasswordEncoder passwordEncoder){
+    public TowerDefenseAPI(UserRepository userRepository, ScoreRepository scoreRepository, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil){
         this.userRepository = userRepository;
         this.scoreRepository = scoreRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/registerAccount", method= RequestMethod.POST )
     public ResponseEntity<?> createUser(@RequestBody UserCreationRequest request){
         if (userRepository.findByUsername(request.getUsername()) != null) {
@@ -34,6 +39,13 @@ public class TowerDefenseAPI {
         userRepository.save(new User(request.getUsername(), passwordEncoder.encode(request.getPassword())));
         return ResponseEntity.ok(new GenericResponse("Success",""));
     }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value="/checkToken", method= RequestMethod.POST )
+    public ResponseEntity<?> getUserFromToken(@RequestBody TokenReq s) {
+        return ResponseEntity.ok(jwtTokenUtil.getUsernameFromToken(s.getToken()));
+    }
+
 
     @RequestMapping(value="/users", method= RequestMethod.GET )
     public ResponseEntity<?> getUsers(){
@@ -131,8 +143,19 @@ public class TowerDefenseAPI {
     }
 
     @RequestMapping(value="/scores", method= RequestMethod.GET )
-    public ResponseEntity<?> getTopScores(){
+    public ResponseEntity<?> getTopScores(@RequestParam(value = "limit", required = false, defaultValue = "-1") String limit){
         List<PublicScore> scores = scoreRepository.findAll().stream().map(PublicScore::new).sorted().collect(Collectors.toList());
-        return ResponseEntity.ok(scores);
+        try {
+            int l = Integer.parseInt(limit);
+            if(l == -1) {
+                return ResponseEntity.ok(scores);
+            } if(l > scores.size() - 1) {
+                return ResponseEntity.ok(scores);
+            } else {
+                return ResponseEntity.ok(scores.subList(0, l));
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
