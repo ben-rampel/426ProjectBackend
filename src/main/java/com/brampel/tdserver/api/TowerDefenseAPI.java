@@ -43,7 +43,9 @@ public class TowerDefenseAPI {
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/checkToken", method= RequestMethod.POST )
     public ResponseEntity<?> getUserFromToken(@RequestBody TokenReq s) {
-        return ResponseEntity.ok(jwtTokenUtil.getUsernameFromToken(s.getToken()));
+        String username = jwtTokenUtil.getUsernameFromToken(s.getToken());
+        Long id = userRepository.findByUsername(username).getId();
+        return ResponseEntity.ok(id);
     }
 
 
