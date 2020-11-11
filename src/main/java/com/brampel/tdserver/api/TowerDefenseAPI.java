@@ -48,7 +48,7 @@ public class TowerDefenseAPI {
         return ResponseEntity.ok(id);
     }
 
-
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users", method= RequestMethod.GET )
     public ResponseEntity<?> getUsers(){
         List<PublicUser> users = userRepository.findAll().stream()
@@ -58,6 +58,7 @@ public class TowerDefenseAPI {
         return ResponseEntity.ok(users);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}", method= RequestMethod.GET )
     public ResponseEntity<?> getUser(@PathVariable("id") String id){
         Optional<User> user = userRepository.findById(Long.parseLong(id));
@@ -71,6 +72,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}", method= RequestMethod.PUT )
     @PreAuthorize("#id.equals(#p.IDasString)")
     public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody UserUpdateRequest request, @AuthenticationPrincipal TDUserDetails p){
@@ -87,6 +89,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}", method= RequestMethod.DELETE )
     @PreAuthorize("#id.equals(#p.IDasString)")
     public ResponseEntity<?> deleteUser(@PathVariable("id") String id, @AuthenticationPrincipal TDUserDetails p){
@@ -99,6 +102,7 @@ public class TowerDefenseAPI {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}/scores", method= RequestMethod.POST )
     @PreAuthorize("#id.equals(#p.IDasString)")
     public ResponseEntity<?> addScore(@PathVariable("id") String id, @RequestBody long score, @AuthenticationPrincipal TDUserDetails p){
@@ -111,6 +115,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}/scores", method= RequestMethod.GET )
     public ResponseEntity<?> getScores(@PathVariable("id") String id){
         Optional<User> user = userRepository.findById(Long.parseLong(id));
@@ -122,6 +127,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/**/scores/{sid}", method= RequestMethod.GET )
     public ResponseEntity<?> getScore(@PathVariable("sid") String sid){
         Optional<Score> s = scoreRepository.findById(Long.parseLong(sid));
@@ -133,6 +139,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/users/{id}/scores/{sid}", method= RequestMethod.DELETE )
     @PreAuthorize("#id.equals(#p.IDasString)")
     public ResponseEntity<?> deleteScore(@PathVariable("sid") String sid, @PathVariable("id") String id, @AuthenticationPrincipal TDUserDetails p){
@@ -144,6 +151,7 @@ public class TowerDefenseAPI {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/scores", method= RequestMethod.GET )
     public ResponseEntity<?> getTopScores(@RequestParam(value = "limit", required = false, defaultValue = "-1") String limit){
         List<PublicScore> scores = scoreRepository.findAll().stream().map(PublicScore::new).sorted().collect(Collectors.toList());
