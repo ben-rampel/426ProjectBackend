@@ -12,19 +12,33 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.net.URISyntaxException;
 
 @Configuration
 @EnableJpaRepositories
 @EnableTransactionManagement
 class ApplicationConfig {
 
-    @Bean
+/*    @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
         dataSourceBuilder.url("jdbc:h2:file:./tdserver/data");
         dataSourceBuilder.username("sa");
         dataSourceBuilder.password("");
+        return dataSourceBuilder.build();
+    }*/
+
+    @Bean
+    public DataSource dataSource() {
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        String username = System.getenv("JDBC_DATABASE_USERNAME");
+        String password = System.getenv("JDBC_DATABASE_PASSWORD");
+
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.url(dbUrl);
+        dataSourceBuilder.username(username);
+        dataSourceBuilder.password(password);
         return dataSourceBuilder.build();
     }
 
