@@ -3,6 +3,7 @@ package com.brampel.tdserver.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name="TDUsers")
 public class User {
 
     @Id
