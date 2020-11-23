@@ -4,6 +4,8 @@ Includes JWT authentication and authorization, user and score storage in an ~~em
 
 # API Description
 
+## Non-public endpoints require a JWT Token in an Authorization Header ("Authorization: Bearer ...")
+
 ## /users/  \[Public\]
 
 GET: View all registered users: id, username, avatar url (not implemented), and an array of their scores on the tower defense game
