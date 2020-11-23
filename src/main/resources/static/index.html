@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./node_modules/bulma/css/bulma.min.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="dropdown.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script>
+        <title>Tower Defense</title>
+    </head>
+    <body>
+        <div class="modal" id="leaderboard_modal">
+            <div class="modal-background"></div>
+            <div class="modal-content" >
+                <div class="box content" id="leaderboard">
+                    <h3>Leaderboard</h3>
+                </div>
+            </div>
+            <button id="leaderboard_close" class="modal-close is-large" aria-label="close"></button>
+            </div>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <p class="navbar-item">UNC Tower Defense</p>
+
+                <a
+                    role="button"
+                    class="navbar-burger burger"
+                    aria-label="menu"
+                    aria-expanded="false"
+                    data-target="navt"
+                >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navt" class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a href="register.html" id="register" class="button is-primary">
+                                <strong>Sign up</strong>
+                            </a>
+                            <button id="leaderboard_toggle" class="button is-primary">Leaderboard</button>
+                            <a href="login.html" id="login" class="button is-light"> Log in </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container is-justify-content-center">
+
+            <div class="game-container">
+                <div id="map-select" class="towerSidebar">
+                    <h3 class="subtitle">Maps:</h3>
+                    <div class="Tower" id="first-map"><img src="./images/map.png"></div>
+                    <div class="Tower" id="second-map"><img src="./images/map2.png"></div>
+                    <div class="Tower" id="third-map"><img src="./images/map3.png"></div>
+                </div>
+                <div class="flex-container">
+                    <div id="stage">
+                        <canvas id="towerplacement" width="500px" height="500px"></canvas>
+                        <canvas id="enemies" width="500px" height="500px"></canvas>
+                        <canvas id="foreground" width="500px" height="500px"></canvas>
+                        <canvas id="background" width="500px" height="500px"></canvas>
+                        <canvas id="single-use" width="500px" height="500px"></canvas>
+                        <canvas id="canvas" width="500px" height="500px"></canvas>
+                    </div>
+                    <div id="control">
+                        <span id="round">Round: </span>
+                        <button class="button" id="roundStart">Start round</button>
+                        <button class="button" id="fastForward">>></button>
+                        <span id="lives">Lives: </span>
+                        <div style="width: 150px">
+                            <span id="money">Money: </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="towerSidebar" id="towerSidebar">
+                    <p>Create Tower</p>
+                </div>
+                <div class="towerSidebar" id="towerInfo"></div>
+            </div>
+        </div>
+        <div class="container is-justify-content-center">
+            <div id="quote-wrapper" class="content">
+                <div id="quote"></div>
+                <div id="author" class="has-text-right"></div>
+            </div>
+        </div>
+        <div id="mute-wrapper">
+            <div id="mute" class="Tower"><img width="50px" height="50px" src="./images/soundon.png"></div>
+        </div>
+        <script src="auth.js"></script>
+        <script type="module" src="src/Main.js"></script>
+    </body>
+</html>

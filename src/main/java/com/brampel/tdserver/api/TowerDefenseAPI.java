@@ -31,6 +31,11 @@ public class TowerDefenseAPI {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+/*    @RequestMapping(value="/", method= RequestMethod.GET )
+    public String index() {
+        return "redirect:/index.html";
+    }*/
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/registerAccount", method= RequestMethod.POST )
     public ResponseEntity<?> createUser(@RequestBody UserCreationRequest request){

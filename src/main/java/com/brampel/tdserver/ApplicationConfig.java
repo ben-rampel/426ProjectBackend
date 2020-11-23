@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
 @EnableTransactionManagement
 class ApplicationConfig {
 
-/*    @Bean
+    @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
@@ -27,9 +27,9 @@ class ApplicationConfig {
         dataSourceBuilder.username("sa");
         dataSourceBuilder.password("");
         return dataSourceBuilder.build();
-    }*/
+    }
 
-    @Bean
+/*    @Bean
     public DataSource dataSource() {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         String username = System.getenv("JDBC_DATABASE_USERNAME");
@@ -40,7 +40,7 @@ class ApplicationConfig {
         dataSourceBuilder.username(username);
         dataSourceBuilder.password(password);
         return dataSourceBuilder.build();
-    }
+    }*/
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
