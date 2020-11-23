@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 @RestController
 public class TowerDefenseAPI {
@@ -33,9 +34,13 @@ public class TowerDefenseAPI {
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/registerAccount", method= RequestMethod.POST )
     public ResponseEntity<?> createUser(@RequestBody UserCreationRequest request){
+        //escape html
+        request.setUsername(escapeHtml4(request.getUsername()));
+
         if (userRepository.findByUsername(request.getUsername()) != null) {
             return ResponseEntity.badRequest().body(new GenericResponse("","Username in use"));
         }
+
         userRepository.save(new User(request.getUsername(), passwordEncoder.encode(request.getPassword())));
         return ResponseEntity.ok(new GenericResponse("Success",""));
     }
