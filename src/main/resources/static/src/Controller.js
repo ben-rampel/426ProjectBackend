@@ -46,11 +46,12 @@ export default class Controller {
         this.gameData.enemiesSpawned = 0;
 
         //increase enemy count for new round
+        const enemy_cap = 250;
         this.gameData.round++;
         this.gameData.maxEnemies =
-            Math.floor((this.gameData.round * this.gameData.round) / 4.4) + 20;
+            Math.min(Math.floor((this.gameData.round * this.gameData.round) / 4.4) + 20, enemy_cap);
         if(this.gameData.round >= 10) {
-            this.gameData.maxBosses = Math.round(this.gameData.round / 10 * Math.random());
+            this.gameData.maxBosses = Math.round(this.gameData.round / 10 * Math.random()) ** 2;
             this.gameData.maxEnemies *= 1.2 * Math.min(4, this.gameData.round - 9);
             this.gameData.spawnSpeed = Math.min(12,1.4 * (this.gameData.round -9));
         }
@@ -111,7 +112,8 @@ export default class Controller {
             } else {
                 newEnemy = new MunsellEnemy(startX, startY, (e) => this.enemyReachedEndHandler(e));
             }
-            // const newEnemy = Math.random() > 0.7 ? new KMPEnemy(3, 50, (e) => this.enemyReachedEndHandler(e)) : new KrisEnemy(3, 50, (e) => this.enemyReachedEndHandler(e));
+            // Increase enemy health as game progresses
+            newEnemy.increaseHealth(25 * Math.floor(this.gameData.round / 10));
             this.enemies.push(newEnemy);
         }
 
@@ -122,7 +124,9 @@ export default class Controller {
             this.gameData.enemiesSpawned >= this.gameData.maxEnemies - this.gameData.maxBosses
         ) {
             this.gameData.enemiesSpawned++;
-            this.enemies.push(new BossEnemy(startX, startY, (e) => this.enemyReachedEndHandler(e)));
+            const boss = new BossEnemy(startX, startY, (e) => this.enemyReachedEndHandler(e));
+            boss.increaseHealth(25 * Math.floor(this.gameData.round / 10));
+            this.enemies.push(boss);
         }
 
         this.towers.forEach(tower => {
